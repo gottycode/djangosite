@@ -27,6 +27,7 @@ class RegistForm(forms.ModelForm):
         validate_password(self.cleaned_data['password'],user)
         user.set_password(self.cleaned_data['password'])
         user.save()
+        print('regist1')
         return user
 
 class RegistForm2(forms.ModelForm):
@@ -40,9 +41,8 @@ class RegistForm2(forms.ModelForm):
 
     # def save(self, commit=False):
     #     user = super().save(commit=False)
-    #     validate_password(self.cleaned_data['password'],user)
-    #     user.set_password(self.cleaned_data['password'])
-    #     user.save()
+
+    #     print('regist2')
     #     return user
 
 class UserLoginForm(AuthenticationForm):

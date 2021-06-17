@@ -20,6 +20,9 @@ class UserManager(BaseUserManager):
         )
         user.set_passwor(password)
         user.save(using=self._db)
+        print('■来たよ')
+        # create_token(user)
+
         return user
 
 class AppUser(AbstractBaseUser, PermissionsMixin):
@@ -48,7 +51,7 @@ class UserActivateTokensManager(models.Manager):
         ).first()
         user = user_activate_token.user
         user.is_active = True
-        print('四角' + str(user.id))
+        # print('■' + str(user.id))
         user.save()
 
 class UserActivateTokens(models.Model):
@@ -61,10 +64,19 @@ class UserActivateTokens(models.Model):
     class Meta:
         db_table = 'user_activate_tokens'
 
-@receiver(post_save, sender=AppUser)
-def publish_token(sender, instance, **kwargs):
+# @receiver(post_save, sender=AppUser)
+# def publish_token(sender, instance, **kwargs):
+#     user_activate_token = UserActivateTokens.objects.create(
+#         user=instance, token=str(uuid4()), expired_at= datetime.now()+timedelta(days=1)
+#     )
+
+#     print(f'http://127.0.0.1:8000/account/activate_user/{user_activate_token.token}')
+
+def create_token(user):
     user_activate_token = UserActivateTokens.objects.create(
-        user=instance, token=str(uuid4()), expired_at= datetime.now()+timedelta(days=1)
+        user=user, token=str(uuid4()), expired_at= datetime.now()+timedelta(days=1)
     )
+    print('■ここも来たよ')
 
     print(f'http://127.0.0.1:8000/account/activate_user/{user_activate_token.token}')
+ 
