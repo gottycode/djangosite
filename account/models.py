@@ -1,5 +1,5 @@
 
-from datetime import datetime,timedelta
+from datetime import datetime, timedelta
 from uuid import uuid4
 from django.db import models
 from django.db.models.signals import post_save
@@ -10,20 +10,36 @@ from django.contrib.auth.models import (
 )
 from django.urls import reverse_lazy
 
+
 class UserManager(BaseUserManager):
     def create_user(self, username, email, password=None):
         if not email:
             raise ValueError('Enter Email')
         user = self.model(
-            username = username,
-            email = email
+            username=username,
+            email=email
         )
-        user.set_passwor(password)
+        user.set_password(password)
         user.save(using=self._db)
         print('■来たよ')
         # create_token(user)
 
         return user
+
+    def create_superuser(self, username, email, password=None):
+        if not email:
+            raise ValueError('Enter Email')
+        user = self.model(
+            username=username,
+            email=email
+        )
+        user.set_password(password)
+        user.is_staff = True
+        user.is_superuser = True
+        user.save(using=self._db)
+
+        return user
+
 
 class AppUser(AbstractBaseUser, PermissionsMixin):
     # TODO クラス名考える
@@ -32,15 +48,17 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
     age = models.IntegerField(null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
     picture = models.FileField(null=True, upload_to='puture/')
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username',]
+    REQUIRED_FIELDS = ['username', ]
 
     objects = UserManager()
 
     def get_absolute_url(self):
         return reverse_lazy('account:home')
+
 
 class UserActivateTokensManager(models.Manager):
 
@@ -53,6 +71,7 @@ class UserActivateTokensManager(models.Manager):
         user.is_active = True
         # print('■' + str(user.id))
         user.save()
+
 
 class UserActivateTokens(models.Model):
     token = models.UUIDField(db_index=True)
@@ -72,11 +91,10 @@ class UserActivateTokens(models.Model):
 
 #     print(f'http://127.0.0.1:8000/account/activate_user/{user_activate_token.token}')
 
-def create_token(user):
-    user_activate_token = UserActivateTokens.objects.create(
-        user=user, token=str(uuid4()), expired_at= datetime.now()+timedelta(days=1)
-    )
-    print('■ここも来たよ')
+# def create_token(user):
+#     user_activate_token = UserActivateTokens.objects.create(
+#         user=user, token=str(uuid4()), expired_at= datetime.now()+timedelta(days=1)
+#     )
+#     print('■ここも来たよ')
 
-    print(f'http://127.0.0.1:8000/account/activate_user/{user_activate_token.token}')
- 
+#     print(f'http://127.0.0.1:8000/account/activate_user/{user_activate_token.token}')

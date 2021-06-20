@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
+<h2>ログイン画面</h2>
 <form method="POST">
     {% csrf_token %}
-    {{ form.as_p}}
-    <input type="hidden" name="next" value="{{ request.GET.next }}" >
+    {{ form.as_p }}
+    <input type="hidden" name="next" value="{{ request.GET.next }}">
     <input type="submit" value="ログイン">
 </form>
 {% endblock %}
