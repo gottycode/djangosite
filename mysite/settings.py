@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'store',
     'account',
+    'stores',
 ]
 
 AUTH_USER_MODEL = 'account.AppUser'
@@ -58,7 +59,7 @@ ROOT_URLCONF = 'mysite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATE_DIR,],
+        'DIRS': [TEMPLATE_DIR, ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -133,5 +134,3 @@ LOGIN_REDIRECT_URL = '/account/home'
 LOGOUT_URL = '/account/user_logout'
 
 SESSION_COOKIE_AGE = 100
-
-
