@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from uuid import uuid4
+import logging
 from django.forms import forms
 
 from django.shortcuts import redirect, render
@@ -12,6 +13,9 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from .forms import RegistForm, RegistForm2, UserLoginForm, CompleteRegistrationForm
 from .models import AppUser, UserActivateTokens
+
+application_logger = logging.getLogger('application-logger')
+error_logger = logging.getLogger('error-logger')
 
 
 class HomeView(TemplateView):
@@ -29,8 +33,7 @@ class RegistUser2View(CreateView):
     model = AppUser
 
     def form_valid(self, form):
-        print(type(form))
-        print('■ここも来たよ')
+        application_logger.warning('仮登録に来た')
 
         user = form.save(commit=False)
         user.is_active = False

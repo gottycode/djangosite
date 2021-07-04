@@ -1,0 +1,3 @@
+2021-07-04 12:39:02,250 INFO [C:\Users\daisu\Documents\py\django\mysite\mysite\middleware.py:13] /account/regist2/
+2021-07-04 12:39:02,279 WARNING [C:\Users\daisu\Documents\py\django\mysite\account\views.py:36] 仮登録に来た
+2021-07-04 12:39:03,257 INFO [C:\Users\daisu\Documents\py\django\mysite\mysite\middleware.py:13] /account/home/

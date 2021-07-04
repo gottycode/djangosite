@@ -1,5 +1,6 @@
 
 from datetime import datetime, timedelta
+from django.utils import timezone
 from uuid import uuid4
 from django.db import models
 from django.db.models.signals import post_save
@@ -66,6 +67,7 @@ class UserActivateTokensManager(models.Manager):
         user_activate_token = self.filter(
             token=token,
             expired_at__gte=datetime.now()
+            # expired_at__gte=timezone.localtime()  # local
         ).first()
         user = user_activate_token.user
         user.is_active = True
