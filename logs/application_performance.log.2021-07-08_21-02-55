@@ -1,0 +1,2 @@
+2021-07-08 21:02:55,019 INFO [C:\Users\daisu\Documents\py\django\mysite\mysite\middleware.py:27] /admin/account/appuser/: 0.0544586181640625s
+2021-07-08 21:02:57,152 INFO [C:\Users\daisu\Documents\py\django\mysite\mysite\middleware.py:27] /admin/account/appuser/13/change/: 0.026226520538330078s

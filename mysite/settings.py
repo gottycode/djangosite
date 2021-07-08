@@ -135,7 +135,7 @@ LOGIN_URL = '/account/user_login'
 LOGIN_REDIRECT_URL = '/account/home'
 LOGOUT_URL = '/account/user_logout'
 
-SESSION_COOKIE_AGE = 100
+# SESSION_COOKIE_AGE = 100
 
 LOGGING = {
     'version': 1,

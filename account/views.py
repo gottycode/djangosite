@@ -101,9 +101,12 @@ class CompleteRegistrationView(View):
         return render(request, self.template_name, {'form': form})
 
     def post(self, request, *args, **kwargs):
-        form = self. form_class(request.POST)
+        form = self.form_class(request.POST)
         if form.is_valid():
             # TODO ユーザーのパスワードを保存して
             # is_activeを更新する
             form.save()
+        else:
+            return render(request, self.template_name, {'form': form})  # エラーメッセージを含んだフォームをセットして再表示
+
         return redirect("account:home")

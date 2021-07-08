@@ -47,6 +47,11 @@
             <li class="nav-item">
               <a class="nav-link" href="{% url 'account:user' %}">ユーザー画面</a>
             </li>
+            {% if perms.account.superman %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'account:user' %}">特別メニュー</a>
+            </li>
+            {% endif %}
           </ul>
         </div>
       </div>

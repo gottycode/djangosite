@@ -1,0 +1,6 @@
+2021-07-08 21:19:38,742 INFO [C:\Users\daisu\Documents\py\django\mysite\mysite\middleware.py:13] /account/user_logout/
+2021-07-08 21:19:41,014 INFO [C:\Users\daisu\Documents\py\django\mysite\mysite\middleware.py:13] /admin/
+2021-07-08 21:19:41,028 INFO [C:\Users\daisu\Documents\py\django\mysite\mysite\middleware.py:13] /admin/login/?next=/admin/
+2021-07-08 21:19:42,554 INFO [C:\Users\daisu\Documents\py\django\mysite\mysite\middleware.py:13] /account/user_logout/
+2021-07-08 21:19:43,019 INFO [C:\Users\daisu\Documents\py\django\mysite\mysite\middleware.py:13] /account/home/
+2021-07-08 21:19:47,716 INFO [C:\Users\daisu\Documents\py\django\mysite\mysite\middleware.py:13] /account/regist2/

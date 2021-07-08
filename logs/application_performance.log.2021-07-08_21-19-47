@@ -1,0 +1,5 @@
+2021-07-08 21:19:38,938 INFO [C:\Users\daisu\Documents\py\django\mysite\mysite\middleware.py:27] /account/user_logout/: 0.19570374488830566s
+2021-07-08 21:19:41,038 INFO [C:\Users\daisu\Documents\py\django\mysite\mysite\middleware.py:27] /admin/login/?next=/admin/: 0.009260892868041992s
+2021-07-08 21:19:42,560 INFO [C:\Users\daisu\Documents\py\django\mysite\mysite\middleware.py:27] /account/user_logout/: 0.005743265151977539s
+2021-07-08 21:19:43,024 INFO [C:\Users\daisu\Documents\py\django\mysite\mysite\middleware.py:27] /account/home/: 0.0048372745513916016s
+2021-07-08 21:19:47,740 INFO [C:\Users\daisu\Documents\py\django\mysite\mysite\middleware.py:27] /account/regist2/: 0.024950742721557617s

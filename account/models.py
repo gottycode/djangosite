@@ -50,12 +50,19 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
-    picture = models.FileField(null=True, upload_to='puture/')
+    picture = models.FileField(null=True, upload_to='puture/', blank=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', ]
 
     objects = UserManager()
+
+    class Meta:
+        default_permissions = ()
+        permissions = [
+            ('pl', 'プロジェクトリーダー'),
+            ('pm', 'プロジェクトマネージャー'),
+        ]
 
     def get_absolute_url(self):
         return reverse_lazy('account:home')
