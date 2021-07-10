@@ -37,12 +37,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework.authtoken',
     'store',
-    'account',
+    'appauth',
     'stores',
 ]
 
-AUTH_USER_MODEL = 'account.AppUser'
+AUTH_USER_MODEL = 'appauth.AppUser'
 
 MIDDLEWARE = [
     'mysite.middleware.PerformanceMiddleware',
@@ -131,9 +133,10 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_URL = '/account/user_login'
-LOGIN_REDIRECT_URL = '/account/home'
-LOGOUT_URL = '/account/user_logout'
+LOGIN_URL = '/appauth/user_login'
+LOGIN_REDIRECT_URL = '/appauth/home'
+LOGOUT_URL = '/appauth/user_logout'
+LOGOUT_REDIRECT_URL = '/appauth/user_login'
 
 # SESSION_COOKIE_AGE = 100
 
@@ -166,9 +169,9 @@ LOGGING = {
             'level': 'ERROR',
             'class': 'logging.handlers.TimedRotatingFileHandler',
             'filename': os.path.join('logs', 'application_error.log'),
-            'when': 'S',
-            'interval': 10,
-            'backupCount': 10,
+            'when': 'd',
+            'interval': 1,
+            'backupCount': 3,
             'formatter': 'simple',
             'encoding': 'utf-8',
             'delay': True,
@@ -177,9 +180,9 @@ LOGGING = {
             'level': 'INFO',
             'class': 'logging.handlers.TimedRotatingFileHandler',
             'filename': os.path.join('logs', 'application_performance.log'),
-            'when': 'S',
-            'interval': 10,
-            'backupCount': 10,
+            'when': 'd',
+            'interval': 1,
+            'backupCount': 3,
             'formatter': 'simple',
             'encoding': 'utf-8',
             'delay': True,
@@ -202,4 +205,12 @@ LOGGING = {
             'propagate': False,
         }
     }
+}
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
 }

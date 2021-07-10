@@ -1,2 +1,0 @@
-2021-07-08 21:03:31,756 INFO [C:\Users\daisu\Documents\py\django\mysite\mysite\middleware.py:27] /account/user_login/?next=/account/user/: 0.004576444625854492s
-2021-07-08 21:03:33,548 INFO [C:\Users\daisu\Documents\py\django\mysite\mysite\middleware.py:27] /account/user_login/: 0.0009889602661132812s
