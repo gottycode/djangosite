@@ -1,9 +1,10 @@
 from datetime import datetime, timedelta
+import os
 from uuid import uuid4
 import logging
 from django.forms import forms
 
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.views.generic.base import View
 from django.views.generic.edit import CreateView
 from django.views.generic.base import TemplateView
@@ -11,7 +12,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from .forms import RegistForm, RegistForm2, UserLoginForm, CompleteRegistrationForm
+from .forms import RegistForm, RegistForm2, UserLoginForm, CompleteRegistrationForm, UpdateUserForm
 from .models import AppUser, UserActivateTokens
 
 application_logger = logging.getLogger('application-logger')
@@ -19,16 +20,16 @@ error_logger = logging.getLogger('error-logger')
 
 
 class HomeView(TemplateView):
-    template_name = 'home.html'
+    template_name = os.path.join('auth', 'home.html')
 
 
 class RegistUserView(CreateView):
-    template_name = 'regist.html'
+    template_name = os.path.join('auth', 'regist.html')
     form_class = RegistForm
 
 
 class RegistUser2View(CreateView):
-    template_name = 'regist2.html'
+    template_name = os.path.join('auth', 'regist2.html')
     form_class = RegistForm2
     model = AppUser
 
@@ -53,7 +54,7 @@ class RegistUser2View(CreateView):
 
 
 class UserLoginView(LoginView):
-    template_name = 'login.html'
+    template_name = os.path.join('auth', 'login.html')
     authentication_form = UserLoginForm
 
     def form_valid(self, form):
@@ -69,28 +70,14 @@ class UserLogoutView(LogoutView):
 
 
 class UserView(LoginRequiredMixin, TemplateView):
-    template_name = 'user.html'
+    template_name = os.path.join('auth', 'user.html')
 
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
 
-"""
-class ActivateView(TemplateView):
-    template_name = 'activate_user.html'
-
-    def get(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
-        token = self.kwargs.get('token')
-        print(token)
-        user_activate_token = UserActivateTokens.objects.activate_user_by_token(token)
-
-        return self.render_to_response(context)
-"""
-
-
 class CompleteRegistrationView(View):
-    template_name = "complete_registration.html"
+    template_name = os.path.join('auth', 'complete_registration.html')
     form_class = CompleteRegistrationForm
 
     def get(self, request, *args, **kwargs):
@@ -110,3 +97,35 @@ class CompleteRegistrationView(View):
             return render(request, self.template_name, {'form': form})  # エラーメッセージを含んだフォームをセットして再表示
 
         return redirect("appauth:home")
+
+
+class UserListView(View):
+    template_name = os.path.join('auth', 'user_list.html')
+
+    def get(self, request, *args, **kwargs):
+        users = AppUser.objects.all()
+        for user in users:
+            perms = user.user_permissions
+            for perm in perms.all():
+                # print(dir(perm))
+                print(perm.name)
+
+        return render(request, self.template_name, {'users': users})
+
+
+class UpdateUserView(View):
+    template_name = os.path.join('auth', 'update_user.html')
+    form_class = UpdateUserForm
+
+    def get(self, request, *args, **kwargs):
+
+        print(dir(request))
+        print(kwargs)
+        app_user = get_object_or_404(AppUser, id=kwargs['pk'])
+        perms = app_user.user_permissions
+        print(AppUser.Meta.permissions)
+        form = UpdateUserForm(request.GET or None, instance=app_user)
+        return render(request, self.template_name, {'form': form, 'permittions': perms.all()})
+
+    def post(self, request, *args, **kwargs):
+        pass

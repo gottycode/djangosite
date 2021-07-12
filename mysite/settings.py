@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'store',
     'appauth',
     'stores',
+    'taskline',
 ]
 
 AUTH_USER_MODEL = 'appauth.AppUser'
@@ -158,9 +159,9 @@ LOGGING = {
             'level': 'INFO',
             'class': 'logging.handlers.TimedRotatingFileHandler',
             'filename': os.path.join('logs', 'application.log'),
-            'when': 'S',
-            'interval': 10,
-            'backupCount': 10,
+            'when': 'd',
+            'interval': 1,
+            'backupCount': 3,
             'formatter': 'simple',
             'encoding': 'utf-8',
             'delay': True,

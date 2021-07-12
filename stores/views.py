@@ -21,6 +21,7 @@ from .forms import(
     CartUpdateForm, AddressInputForm,
 )
 
+
 class ProductListView(LoginRequiredMixin, ListView):
     model = Products
     template_name = os.path.join('stores', 'product_list.html')
@@ -67,6 +68,7 @@ class ProductDetailView(LoginRequiredMixin, DetailView):
             product_id=kwargs.get('object').id
         ).first()
         return context
+
 
 @login_required
 def add_product(request):
@@ -188,7 +190,7 @@ class ConfirmOrderView(LoginRequiredMixin, TemplateView):
         context['total_price'] = total_price
         context['items'] = items
         return context
-    
+
     @transaction.atomic
     def post(self, request, *args, **kwargs):
         context = self.get_context_data()

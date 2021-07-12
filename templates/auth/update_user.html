@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>ユーザー更新</h2>
+
+<form method="POST">
+   {% csrf_token %}
+   {{ form.as_p }}
+
+   {% for perm in permittions %}
+   {{ perms.name }}
+   {% endfor %}
+   <input type="submit" value="更新">
+</form>
+{% endblock %}

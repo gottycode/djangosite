@@ -2,7 +2,7 @@ from django.urls import path
 from .views import (
     RegistUserView, HomeView, UserLoginView,
     UserLogoutView, UserView, RegistUser2View,  # ActivateView,
-    CompleteRegistrationView
+    CompleteRegistrationView, UserListView, UpdateUserView
 )
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.views import PasswordChangeDoneView
@@ -20,5 +20,6 @@ urlpatterns = [
     path('change_password/', PasswordChangeView.as_view(success_url=reverse_lazy('appauth:password_change_done')), name='change_password'),
     path('password_change_done/', PasswordChangeDoneView.as_view(), name='password_change_done'),
     path('user/', UserView.as_view(), name='user'),
-
+    path('userlist/', UserListView.as_view(), name='userlist'),
+    path('update_user/<int:pk>', UpdateUserView.as_view(), name='update_user'),
 ]

@@ -22,4 +22,5 @@ urlpatterns = [
     path('appauth/', include('appauth.urls')),
     path('stores/', include('stores.urls')),
     path('apitest/', include('apitest.urls')),
+    path('taskline/', include('taskline.urls')),
 ]
