@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block headtitle %}{{ block.super }} -タスク削除{% endblock %}
+{% block pagetitle_body %}タスク削除{% endblock %}
+{% block content %}
+<h2>タスク追加</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    {{form.as_p}}
+
+    <input type="submit" value="消してよいよ">
+</form>
+{% endblock %}

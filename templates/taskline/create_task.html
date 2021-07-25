@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block headtitle %}
+{{ block.super }} -
+{% if 'create' in request.path %}
+タスク作成
+{% else %}
+タスク更新
+{% endif %}
+{% endblock %}
+
+{% block pagetitle_body %}
+{% if 'create' in request.path %}
+タスク作成
+{% else %}
+タスク更新
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <!-- {{ form.as_p }} -->
+    {% if message %}
+    {{ message }}
+    {% endif %}
+    <div class="mb-3">
+        <label for="{{ form.task_name.id_for_label }}" class="form-label">タスク名</label>
+        {{ form.task_name }}
+        <!-- <input type="{{ form.task_name.field.widget.input_type}}" name="{{ form.task_name.html_name }}"
+            class="form-control" id="{{ form.task_name.id_for_label }}" value="{{form.task_name.value}}"> -->
+
+        <label for="{{ form.task_resource.id_for_label}}" class="form-label">人</label>
+        {{ form.task_resource }}
+
+        <!-- <select name="{{ form.task_resource.html_name }}" class="form-control" id="{{form.task_resource.id_for_label}}"
+            value="{{form.task_resource.value}}">
+            {% for value,text in form.task_resource.field.choices %}
+            <option value={{value}}>{{text}}</option>
+            {% endfor %}
+        </select> -->
+
+        <label for="{{ form.task_category.id_for_label}}" class="form-label">カテゴリ</label>
+        {{ form.task_category }}
+
+        <!-- <select name="{{ form.task_category.html_name }}" class="form-control" id="{{form.task_category.id_for_label}}"
+            value="{{form.task_category.value}}">
+            {% for value,text in form.task_category.field.choices %}
+            <option value={{value}}>{{text}}</option>
+            {% endfor %}
+        </select> -->
+
+        <label for="{{ form.work_hours.id_for_label}}" class="form-label">時間</label>
+        {{ form.work_hours }}
+
+        <!-- <input type="{{ form.work_hours.field.widget.input_type}}" name="{{ form.work_hours.html_name }}"
+            class="form-control" id="{{form.work_hours.id_for_label}}" value="{{form.work_hours.value}}"> -->
+
+
+        <label for="{{ form.progress_rate.id_for_label}}" class="form-label">進捗率</label>
+        <input type="{{ form.progress_rate.field.widget.input_type}}" name="{{ form.progress_rate.html_name }}"
+            class="form-control is-invalid" id="{{form.progress_rate.id_for_label}}"
+            value="{{form.progress_rate.value}}">
+        {% if form.progress_rate.errors %}
+        <div class="invalid-feedback">
+            {% for error in form.progress_rate.errors %}
+            {{ error }}
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <label for="{{ form.planed_hours.id_for_label}}" class="form-label">予定工数[人日]</label>
+        <input type="{{ form.planed_hours.field.widget.input_type}}" name="{{ form.planed_hours.html_name }}"
+            class="form-control " id="{{form.planed_hours.id_for_label}}" value="{{form.planed_hours.value}}">
+
+        <label for="{{ form.planned_start_datetime.id_for_label}}" class="form-label">予定開始日時</label>
+        <input type="{{ form.planned_start_datetime.field.widget.input_type}}"
+            name="{{ form.planned_start_datetime.html_name }}" class="form-control is-invalid"
+            id="{{form.planned_start_datetime.id_for_label}}" value="{{form.planned_start_datetime.value}}">
+        {% if form.planned_start_datetime.errors %}
+        <div class="invalid-feedback">
+            {% for error in form.planned_start_datetime.errors %}
+            {{ error }}
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <label for="{{ form.planned_end_datetime.id_for_label}}" class="form-label">予定終了日時</label>
+        <input type="{{ form.planned_end_datetime.field.widget.input_type}}"
+            name="{{ form.planned_end_datetime.html_name }}" class="form-control is-invalid"
+            id="{{form.planned_end_datetime.id_for_label}}" value="{{form.planned_end_datetime.value}}">
+        {% if form.planned_end_datetime.errors %}
+        <div class="invalid-feedback">
+            {% for error in form.planned_end_datetime.errors %}
+            {{ error }}
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <label for="{{ form.actual_start_datetime.id_for_label}}" class="form-label">実績開始日時</label>
+        <input type="{{ form.actual_start_datetime.field.widget.input_type}}"
+            name="{{ form.actual_start_datetime.html_name }}" class="form-control is-invalid"
+            id="{{form.actual_start_datetime.id_for_label}}" value="{{form.actual_start_datetime.value}}">
+        {% if form.actual_start_datetime.errors %}
+        <div class="invalid-feedback">
+            {% for error in form.actual_start_datetime.errors %}
+            {{ error }}
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <label for="{{ form.actual_end_datetime.id_for_label}}" class="form-label">実績終了日時</label>
+        <input type="{{ form.actual_end_datetime.field.widget.input_type}}"
+            name="{{ form.actual_end_datetime.html_name }}" class="form-control"
+            id="{{form.actual_end_datetime.id_for_label}}" value="{{form.actual_end_datetime.value}}">
+
+
+    </div>
+
+    <input type="submit" value="登録">
+</form>
+
+{% endblock %}

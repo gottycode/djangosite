@@ -1,0 +1,39 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'appauth:home' %}">ホーム</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+
+        {% if user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'appauth:user_logout' %}">ログアウト</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'appauth:change_password' %}">パスワード変更</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'appauth:user_login' %}">ログイン</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'appauth:regist' %}">ユーザー登録</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'appauth:regist2' %}">ユーザー仮登録</a>
+        </li>
+        {% endif %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'appauth:user' %}">ユーザー画面</a>
+        </li>
+        <li class="nav-item">
+          ログイン：{{ user.username }}さん
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>

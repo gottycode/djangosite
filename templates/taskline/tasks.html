@@ -1,0 +1,13 @@
+{% for task in tasks %}
+
+<tr>
+    <th scope="row">{{ forloop.counter }}</th>
+    <td>{{task.id}}</td>
+    <td>{{task.task_name}}</td>
+    <td>{{task.work_hours}}</td>
+    <td>
+        <a href="{% url 'taskline:update_task' id=task.id %}">編集</a>
+        <a href="{% url 'taskline:delete_task' id=task.id %}">削除</a>
+    </td>
+</tr>
+{% endfor %}

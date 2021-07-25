@@ -1,0 +1,33 @@
+<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+  <div class="position-sticky pt-3">
+    <ul class="nav flex-column">
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="{% url 'taskline:task_list' %}">
+          <span data-feather="home"></span>
+          タスク
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <span data-feather="file"></span>
+          次のメニュー
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <span data-feather="shopping-cart"></span>
+          その次のメニュー
+        </a>
+      </li>
+      {% if perms.appauth.pm %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'appauth:userlist' %}">
+          <span data-feather="layers"></span>
+          ユーザー一覧（作成中）
+        </a>
+      </li>
+      {% endif %}
+    </ul>
+
+  </div>
+</nav>

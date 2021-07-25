@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block headtitle %}{{ block.super }} -タスクリスト{% endblock %}
+{% block pagetitle_body %}タスクリスト{% endblock %}
+
+
+{% block content %}
+
+<script type="text/javascript">
+    // A CSRF token is required when making post requests in Django
+    // To be used for making AJAX requests in script.js
+    window.CSRF_TOKEN = "{{ csrf_token }}";
+</script>
+{% load static %}
+<link href="{% static 'css/taskline.css' %}" rel="stylesheet">
+
+<a class="btn btn-primary" href="{% url 'taskline:create_task' %}" role=" button">タスク追加</a>
+<table class="table table-hover table-sm">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">id</th>
+            <th scope="col">タスク名</th>
+            <th scope="col">時間</th>
+            <th scope="col">操作</th>
+        </tr>
+    </thead>
+    <tbody id="tasks">
+        {% include 'taskline/tasks.html' %}
+
+    </tbody>
+</table>
+<div><a id="lazyLoadLink" href="javascript:void(0);" data-nextpage="2">Load More Posts</a></div>
+
+{% load static %}
+<!--
+<script src="{% static 'js/taskline/task_list.js' %}"></script>
+-->
+{% endblock %}
