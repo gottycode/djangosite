@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block headtitle %}{{ block.super }} -タスクリスト{% endblock %}
+{% block pagetitle_body %}タスクリスト{% endblock %}
+
+
+{% block content %}
+
+<script type="text/javascript">
+    // A CSRF token is required when making post requests in Django
+    // To be used for making AJAX requests in script.js
+    window.CSRF_TOKEN = "{{ csrf_token }}";
+</script>
+
+<form method="GET">
+    <label for="{{ form.task_name.id_for_label}}" class="form-label">タスク名</label>
+    <input type="{{ form.task_name.field.widget.input_type}}" name="{{ form.task_name.html_name }}"
+        class="form-control is-invalid" id="{{form.task_name.id_for_label}}" value="{{form.task_name.value}}">
+    {% if form.task_name.errors %}
+    <div class="invalid-feedback">
+        {% for error in form.task_name.errors %}
+        {{ error }}
+        {% endfor %}
+    </div>
+    {% endif %}
+    <label for="{{ form.work_hours.id_for_label}}" class="form-label">作業時間</label>
+    <input type="{{ form.work_hours.field.widget.input_type}}" name="{{ form.work_hours.html_name }}"
+        class="form-control is-invalid" id="{{form.work_hours.id_for_label}}" value="{{form.work_hours.value}}">
+    {% if form.work_hours.errors %}
+    <div class="invalid-feedback">
+        {% for error in form.work_hours.errors %}
+        {{ error }}
+        {% endfor %}
+    </div>
+    {% endif %}
+    <input type="submit" class="btn btn-primary" value="検索">
+
+</form>
+
+{% load static %}
+<link href="{% static 'css/taskline.css' %}" rel="stylesheet">
+
+<table class="table table-hover table-sm">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">id</th>
+            <th scope="col">タスク名</th>
+            <th scope="col">時間</th>
+            <th scope="col">操作</th>
+        </tr>
+    </thead>
+    <tbody id="tasks">
+        {% include 'taskline/tasks.html' %}
+
+    </tbody>
+</table>
+
+{% load static %}
+<!--
+<script src="{% static 'js/taskline/task_list.js' %}"></script>
+-->
+{% endblock %}

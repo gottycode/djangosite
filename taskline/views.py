@@ -6,22 +6,53 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.base import View
+from django.db.models import Q
 
 from taskline.models import Task
 from taskline.forms import CreateTaskForm
 from taskline.forms import UpdateTaskForm
 from taskline.forms import DeleteTaskForm
+from taskline.forms import SearchTaskForm
 
 
 class TaskListView(View):
+    """タスク一覧"""
 
     def get(self, request, *args, **kwargs):
+
         tasks = Task.objects.all()[:5]
 
         context = {
             'tasks': tasks
         }
         return render(request, 'taskline/task_list.html', context)
+
+
+class TaskListSearchView(View):
+
+    def get(self, request, *args, **kwargs):
+        form = SearchTaskForm(request.GET or None)
+
+        # print(form.is_valid)
+        # print(form.errors)
+        if form.is_valid():
+
+            task_name = request.GET.get('task_name')
+            work_hours = request.GET.get('work_hours')
+            form = SearchTaskForm
+            tasks = Task.objects.filter(Q(task_name=task_name) | Q(work_hours=work_hours))
+            context = {
+                'tasks': tasks,
+                'form': form
+            }
+            return render(request, 'taskline/task_list_search.html', context)
+        else:
+            message = 'エラーがあります。再入力してください'
+            context = {
+                'form': form,
+                'message': message
+            }
+            return render(request, 'taskline/task_list_search.html', context)
 
 
 def lazy_load_tasks(request):

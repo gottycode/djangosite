@@ -10,6 +10,9 @@ from taskline.models import TaskCategory
 
 class CreateTaskForm(forms.ModelForm):
 
+    # TODO  {{ form.as_p }}以外効かない？
+    # error_css_class = 'is-invalid'
+
     task_name = forms.CharField(
         max_length=5,
         initial='',
@@ -86,6 +89,11 @@ class CreateTaskForm(forms.ModelForm):
 class UpdateTaskForm(CreateTaskForm):
     # とりあえずCreateを使う
     pass
+
+
+class SearchTaskForm(forms.Form):
+    task_name = forms.CharField(initial='', max_length=5,)
+    work_hours = forms.DecimalField()
 
 
 class DeleteTaskForm(forms.ModelForm):

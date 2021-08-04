@@ -37,3 +37,15 @@
 <script src="{% static 'js/taskline/task_list.js' %}"></script>
 -->
 {% endblock %}
+
+{% block pagejs %}
+{% load static %}
+
+<script src="{% static 'js/taskline/task_list.js' %}"></script>
+<script>
+    $(function () {
+
+        $("#toast1").toast('show');
+    })
+</script>
+{% endblock %}

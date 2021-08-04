@@ -42,17 +42,11 @@
   <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
   <script src="{% static 'js/feather.min.js' %}"></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
+  <!-- <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
     integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE"
-    crossorigin="anonymous"></script>
-  <script src="{% static 'js/taskline/task_list.js' %}"></script>
-
-  <script>
-    $(function () {
-
-      $("#toast1").toast('show');
-    })
-  </script>
+    crossorigin="anonymous"></script> -->
+  {# 画面個別のJavascript読み込み #}
+  {% block pagejs %}{% endblock %}
 
   <!-- Option 2: Separate Popper and Bootstrap JS -->
   <!--
