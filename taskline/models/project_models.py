@@ -1,19 +1,21 @@
-from django.db import models
+from django.db.models import Model
+from django.db.models import CharField, DateField, TextField
+from django.db.models import ManyToManyField
 
 
-class ProjectTag(models.Model):
-    project_tag_name = models.CharField(max_length=100)
+class ProjectTag(Model):
+    project_tag_name = CharField(max_length=100)
 
     def __str__(self):
         return self.project_tag_name
 
 
-class Project(models.Model):
+class Project(Model):
     # 名前
-    project_name = models.CharField(max_length=200)
-    start_date = models.DateField(blank=True, null=True)
-    tags = models.ManyToManyField(ProjectTag, blank=True)
-    memo = models.TextField('備考', max_length=50, blank=True)
+    project_name = CharField(max_length=200)
+    start_date = DateField(blank=True, null=True)
+    tags = ManyToManyField(ProjectTag, blank=True)
+    memo = TextField('備考', max_length=50, blank=True)
 
     def __str__(self):
         return self.project_name

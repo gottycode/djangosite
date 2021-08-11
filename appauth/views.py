@@ -2,18 +2,16 @@ from datetime import datetime, timedelta
 import os
 from uuid import uuid4
 import logging
-from django.forms import forms
 
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views.generic.base import View
 from django.views.generic.edit import CreateView
 from django.views.generic.base import TemplateView
 from django.contrib.auth.views import LoginView, LogoutView
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.utils.decorators import method_decorator
-from django.contrib.auth.decorators import login_required
-from .forms import RegistForm, RegistForm2, UserLoginForm, CompleteRegistrationForm, UpdateUserForm
-from .models import AppUser, UserActivateTokens
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+
+from appauth.forms import RegistForm, RegistForm2, UserLoginForm, CompleteRegistrationForm, UpdateUserForm
+from appauth.models import AppUser, UserActivateTokens
 
 application_logger = logging.getLogger('application-logger')
 error_logger = logging.getLogger('error-logger')
@@ -99,7 +97,7 @@ class CompleteRegistrationView(View):
         return redirect("appauth:home")
 
 
-class UserListView(View):
+class UserListView(View, LoginRequiredMixin, PermissionRequiredMixin):
     template_name = os.path.join('auth', 'user_list.html')
 
     def get(self, request, *args, **kwargs):
@@ -123,9 +121,23 @@ class UpdateUserView(View):
         print(kwargs)
         app_user = get_object_or_404(AppUser, id=kwargs['pk'])
         perms = app_user.user_permissions
-        print(AppUser.Meta.permissions)
+        # print(AppUser.Meta.permissions)
         form = UpdateUserForm(request.GET or None, instance=app_user)
         return render(request, self.template_name, {'form': form, 'permittions': perms.all()})
 
     def post(self, request, *args, **kwargs):
-        pass
+
+        id = kwargs['id']
+        user = get_object_or_404(AppUser, pk=id)
+        form = UpdateUserForm(request.POST or None, instance=user)
+        if form.is_valid:
+            form.save()
+            return redirect('appauth: user_list')
+
+        else:
+            message = '再入力してください'
+            context = {
+                'form': form,
+                'message': message
+            }
+            return render(request, self.template_name, context)

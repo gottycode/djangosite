@@ -188,7 +188,18 @@ LOGGING = {
             'formatter': 'simple',
             'encoding': 'utf-8',
             'delay': True,
-        }
+        },
+        'sql_log__handler': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': os.path.join('logs', 'sql.log'),
+            'when': 'd',
+            'interval': 1,
+            'backupCount': 3,
+            'formatter': 'simple',
+            'encoding': 'utf-8',
+            'delay': True,
+        },
     },
     'loggers': {
         'application-logger': {
@@ -205,7 +216,12 @@ LOGGING = {
             'handlers': ['timed_performance_handler'],
             'level': 'INFO',
             'propagate': False,
-        }
+        },
+        # SQLログ
+        'django.db.backends': {
+            'handlers': ['sql_log__handler'],
+            'level': 'DEBUG',
+        },
     }
 }
 

@@ -1,5 +1,5 @@
 import os
-from typing import ContextManager
+
 from django.contrib import messages
 from django.template import loader
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -15,12 +15,16 @@ from taskline.forms import DeleteTaskForm
 from taskline.forms import SearchTaskForm
 
 
+# 1ページあたりの表示件数
+RESULT_PER_PAGE = 10
+
+
 class TaskListView(View):
     """タスク一覧"""
 
     def get(self, request, *args, **kwargs):
 
-        tasks = Task.objects.all()[:5]
+        tasks = Task.objects.all()[:RESULT_PER_PAGE]
 
         context = {
             'tasks': tasks
@@ -29,16 +33,18 @@ class TaskListView(View):
 
 
 class TaskListSearchView(View):
+    """タスクリスト検索"""
 
     def get(self, request, *args, **kwargs):
         form = SearchTaskForm(request.GET or None)
 
-        # print(form.is_valid)
-        # print(form.errors)
         if form.is_valid():
-
+            # 入力チェックOK
             task_name = request.GET.get('task_name')
-            work_hours = request.GET.get('work_hours')
+            work_hours = request.GET.get(key='work_hours', default=-1.0)
+            work_hours = work_hours if work_hours else -1.0
+            print('--------------------------')
+            print(work_hours)
             form = SearchTaskForm
             tasks = Task.objects.filter(Q(task_name=task_name) | Q(work_hours=work_hours))
             context = {
@@ -61,8 +67,8 @@ def lazy_load_tasks(request):
 
     # use Django's pagination
     # https://docs.djangoproject.com/en/dev/topics/pagination/
-    results_per_page = 5
-    paginator = Paginator(tasks, results_per_page)
+
+    paginator = Paginator(tasks, RESULT_PER_PAGE)
     try:
         tasks = paginator.page(page)
     except PageNotAnInteger:

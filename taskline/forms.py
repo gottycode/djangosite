@@ -1,63 +1,65 @@
 import datetime
 
 from appauth.models import AppUser
-from django import forms
-from django.core.exceptions import ValidationError
+from django.forms import (DecimalField, CharField, FloatField,
+                          ModelChoiceField, TextInput, ValidationError,
+                          DateTimeField, DateTimeInput, DurationField)
+from django.forms import ModelForm, Form
 
 from taskline.models import Task
 from taskline.models import TaskCategory
 
 
-class CreateTaskForm(forms.ModelForm):
+class CreateTaskForm(ModelForm):
 
     # TODO  {{ form.as_p }}以外効かない？
     # error_css_class = 'is-invalid'
 
-    task_name = forms.CharField(
+    task_name = CharField(
         max_length=5,
         initial='',
-        widget=forms.TextInput(
+        widget=TextInput(
             attrs={
                 'class': 'form-control',
                 'placeholder': '名前'
             }
         )
     )
-    work_hours = forms.DecimalField(
+    work_hours = DecimalField(
         initial=0.0,
         max_value=160,
         min_value=0,
         decimal_places=2,
-        widget=forms.TextInput(
+        widget=TextInput(
             attrs={
                 'class': 'form-control'
             }
         ))
-    task_resource = forms.ModelChoiceField(queryset=AppUser.objects.all())
-    task_category = forms.ModelChoiceField(queryset=TaskCategory.objects.all())
+    task_resource = ModelChoiceField(queryset=AppUser.objects.all())
+    task_category = ModelChoiceField(queryset=TaskCategory.objects.all())
 
-    progress_rate = forms.FloatField(required=False, min_value=0, max_value=100)
-    duration = forms.DurationField(required=False)
-    planed_hours = forms.DecimalField(required=False)
-    actual_hours = forms.DecimalField(required=False)
-    planned_start_datetime = forms.DateTimeField(
+    progress_rate = FloatField(required=False, min_value=0, max_value=100)
+    duration = DurationField(required=False)
+    planed_hours = DecimalField(required=False)
+    actual_hours = DecimalField(required=False)
+    planned_start_datetime = DateTimeField(
         required=False,
-        widget=forms.DateTimeInput(
+        widget=DateTimeInput(
             attrs={"type": "datetime-local",
                    "value": datetime.datetime.now().strftime('%Y-%m-%dT%H:%M')}))
-    planned_end_datetime = forms.DateTimeField(required=False,
-                                               widget=forms.DateTimeInput(
-                                                   attrs={"type": "datetime-local",
-                                                          "value": datetime.datetime.now().strftime('%Y-%m-%dT%H:%M')}))
-    actual_start_datetime = forms.DateTimeField(required=False,
-                                                widget=forms.DateTimeInput(
-                                                    attrs={"type": "datetime-local",
-                                                           "value": datetime.datetime.now().strftime('%Y-%m-%dT%H:%M')}))
-    actual_end_datetime = forms.DateTimeField(required=False,
-                                              widget=forms.DateTimeInput(
-                                                  attrs={"type": "datetime-local",
-                                                         "value": datetime.datetime.now().strftime('%Y-%m-%dT%H:%M')}))
-    # picture = forms.FileField(label='ファイルアップロード')
+    planned_end_datetime = DateTimeField(required=False,
+                                         widget=DateTimeInput(
+                                             attrs={"type": "datetime-local",
+                                                    "value": datetime.datetime.now().strftime('%Y-%m-%dT%H:%M')}))
+    actual_start_datetime = DateTimeField(required=False,
+                                          widget=DateTimeInput(
+                                              attrs={"type": "datetime-local",
+                                                     "value": datetime.datetime.now().strftime('%Y-%m-%dT%H:%M')}))
+    actual_end_datetime = DateTimeField(required=False,
+                                        widget=DateTimeInput(
+                                            attrs={"type": "datetime-local",
+                                                   "value": datetime.datetime.now().strftime('%Y-%m-%dT%H:%M')}))
+    # picture = FileField(label='ファイルアップロード')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -91,12 +93,12 @@ class UpdateTaskForm(CreateTaskForm):
     pass
 
 
-class SearchTaskForm(forms.Form):
-    task_name = forms.CharField(initial='', max_length=5,)
-    work_hours = forms.DecimalField()
+class SearchTaskForm(Form):
+    task_name = CharField(initial='', max_length=5, required=False)
+    work_hours = DecimalField(required=False)
 
 
-class DeleteTaskForm(forms.ModelForm):
+class DeleteTaskForm(ModelForm):
     class Meta:
         model = Task
         fields = []

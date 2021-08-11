@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 
+{# ヘッダタイトル ------------------------------------- #}
 {% block headtitle %}
 {{ block.super }} -
 {% if 'create' in request.path %}
@@ -9,6 +10,7 @@
 {% endif %}
 {% endblock %}
 
+{# ページタイトル ------------------------------------- #}
 {% block pagetitle_body %}
 {% if 'create' in request.path %}
 タスク作成
@@ -17,11 +19,11 @@
 {% endif %}
 {% endblock %}
 
+{# コンテンツ部分 ------------------------------------- #}
 {% block content %}
-
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    <!-- {{ form.as_p }} -->
+    <!-- 参考(form全体をdjango formの機能で出力){{ form.as_p }} -->
     {% if message %}
     {{ message }}
     {% endif %}

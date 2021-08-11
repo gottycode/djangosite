@@ -1,10 +1,11 @@
 
-from datetime import datetime, timedelta
-from django.utils import timezone
-from uuid import uuid4
-from django.db import models
-from django.db.models.signals import post_save
-from django.dispatch import receiver
+from datetime import datetime
+
+from django.db.models import Model, Manager
+from django.db.models import (CharField, EmailField, IntegerField,
+                              BooleanField, FileField, DateTimeField)
+from django.db.models import UUIDField, OneToOneField, CASCADE
+
 from django.conf import settings
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser, PermissionsMixin
@@ -22,8 +23,6 @@ class UserManager(BaseUserManager):
         )
         user.set_password(password)
         user.save(using=self._db)
-        print('■来たよ')
-        # create_token(user)
 
         return user
 
@@ -44,13 +43,13 @@ class UserManager(BaseUserManager):
 
 class AppUser(AbstractBaseUser, PermissionsMixin):
     # TODO クラス名考える
-    username = models.CharField(max_length=150)
-    email = models.EmailField(max_length=150, unique=True)
-    age = models.IntegerField(null=True)
-    is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
-    is_superuser = models.BooleanField(default=False)
-    picture = models.FileField(null=True, upload_to='puture/', blank=True)
+    username = CharField(max_length=150)
+    email = EmailField(max_length=150, unique=True)
+    age = IntegerField(null=True)
+    is_active = BooleanField(default=True)
+    is_staff = BooleanField(default=False)
+    is_superuser = BooleanField(default=False)
+    picture = FileField(null=True, upload_to='puture/', blank=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', ]
@@ -68,7 +67,7 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
         return reverse_lazy('appauth:home')
 
 
-class UserActivateTokensManager(models.Manager):
+class UserActivateTokensManager(Manager):
 
     def activate_user_by_token(self, token):
         user_activate_token = self.filter(
@@ -82,10 +81,10 @@ class UserActivateTokensManager(models.Manager):
         user.save()
 
 
-class UserActivateTokens(models.Model):
-    token = models.UUIDField(db_index=True)
-    expired_at = models.DateTimeField()
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+class UserActivateTokens(Model):
+    token = UUIDField(db_index=True)
+    expired_at = DateTimeField()
+    user = OneToOneField(settings.AUTH_USER_MODEL, on_delete=CASCADE)
 
     objects = UserActivateTokensManager()
 

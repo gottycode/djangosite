@@ -1,15 +1,18 @@
-from django import forms
-from .models import AppUser
+from django.forms import (BooleanField, CharField, IntegerField,
+                          EmailField, PasswordInput, ValidationError)
+from django.forms import ModelForm
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.forms import AuthenticationForm
 
+from appauth.models import AppUser
 
-class RegistForm(forms.ModelForm):
-    username = forms.CharField(label='名前')
-    age = forms.IntegerField(label='年齢', min_value=0)
-    email = forms.EmailField(label='メールアドレス')
-    password = forms.CharField(label='パスワード', widget=forms.PasswordInput())
-    confirm_password = forms.CharField(label='パスワード再入力', widget=forms.PasswordInput())
+
+class RegistForm(ModelForm):
+    username = CharField(label='名前')
+    age = IntegerField(label='年齢', min_value=0)
+    email = EmailField(label='メールアドレス')
+    password = CharField(label='パスワード', widget=PasswordInput())
+    confirm_password = CharField(label='パスワード再入力', widget=PasswordInput())
 
     class Meta:
         model = AppUser
@@ -20,7 +23,7 @@ class RegistForm(forms.ModelForm):
         password = cleaned_data.get('password')
         confirm_password = cleaned_data.get('confirm_password')
         if password != confirm_password:
-            raise forms.ValidationError('パスワードが一致しません')
+            raise ValidationError('パスワードが一致しません')
         user = super().save(commit=False)
         validate_password(self.cleaned_data['password'], user)
 
@@ -32,10 +35,10 @@ class RegistForm(forms.ModelForm):
         return user
 
 
-class RegistForm2(forms.ModelForm):
-    username = forms.CharField(label='名前')
-    age = forms.IntegerField(label='年齢', min_value=0)
-    email = forms.EmailField(label='メールアドレス')
+class RegistForm2(ModelForm):
+    username = CharField(label='名前')
+    age = IntegerField(label='年齢', min_value=0)
+    email = EmailField(label='メールアドレス')
 
     class Meta:
         model = AppUser
@@ -48,10 +51,10 @@ class RegistForm2(forms.ModelForm):
     #     return user
 
 
-class CompleteRegistrationForm(forms.ModelForm):
+class CompleteRegistrationForm(ModelForm):
 
-    password = forms.CharField(label='パスワード', widget=forms.PasswordInput())
-    confirm_password = forms.CharField(label='パスワード再入力', widget=forms.PasswordInput())
+    password = CharField(label='パスワード', widget=PasswordInput())
+    confirm_password = CharField(label='パスワード再入力', widget=PasswordInput())
 
     class Meta:
         model = AppUser
@@ -62,7 +65,7 @@ class CompleteRegistrationForm(forms.ModelForm):
         password = cleaned_data.get('password')
         confirm_password = cleaned_data.get('confirm_password')
         if password != confirm_password:
-            raise forms.ValidationError('パスワードが一致しません')
+            raise ValidationError('パスワードが一致しません')
         user = super().save(commit=False)
         validate_password(self.cleaned_data['password'], user)
 
@@ -74,18 +77,18 @@ class CompleteRegistrationForm(forms.ModelForm):
 
 
 class UserLoginForm(AuthenticationForm):
-    username = forms.EmailField(label='メールアドレス')
-    password = forms.CharField(label='パスワード')
-    remember = forms.BooleanField(label='ログイン情報保持', required=False)
+    username = EmailField(label='メールアドレス')
+    password = CharField(label='パスワード')
+    remember = BooleanField(label='ログイン情報保持', required=False)
 
 
-class UpdateUserForm(forms.ModelForm):
+class UpdateUserForm(ModelForm):
 
-    username = forms.CharField(label='名前')
-    age = forms.IntegerField(label='年齢', min_value=0)
-    email = forms.EmailField(label='メールアドレス')
-    password = forms.CharField(label='パスワード', widget=forms.PasswordInput())
-    confirm_password = forms.CharField(label='パスワード再入力', widget=forms.PasswordInput())
+    username = CharField(label='名前')
+    age = IntegerField(label='年齢', min_value=0)
+    email = EmailField(label='メールアドレス')
+    password = CharField(label='パスワード', widget=PasswordInput(), required=False)
+    confirm_password = CharField(label='パスワード再入力', widget=PasswordInput(), required=False)
 
     class Meta:
         model = AppUser
@@ -96,7 +99,7 @@ class UpdateUserForm(forms.ModelForm):
         password = cleaned_data.get('password')
         confirm_password = cleaned_data.get('confirm_password')
         if password != confirm_password:
-            raise forms.ValidationError('パスワードが一致しません')
+            raise ValidationError('パスワードが一致しません')
         user = super().save(commit=False)
         validate_password(self.cleaned_data['password'], user)
 

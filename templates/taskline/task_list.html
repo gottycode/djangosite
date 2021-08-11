@@ -32,10 +32,6 @@
 </table>
 <div><a id="lazyLoadLink" href="javascript:void(0);" data-nextpage="2">Load More Posts</a></div>
 
-{% load static %}
-<!--
-<script src="{% static 'js/taskline/task_list.js' %}"></script>
--->
 {% endblock %}
 
 {% block pagejs %}
@@ -44,7 +40,6 @@
 <script src="{% static 'js/taskline/task_list.js' %}"></script>
 <script>
     $(function () {
-
         $("#toast1").toast('show');
     })
 </script>
