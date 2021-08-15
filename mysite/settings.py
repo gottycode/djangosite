@@ -15,6 +15,7 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
+ERROR_PAGES = os.path.join(TEMPLATE_DIR, 'errors')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -25,7 +26,7 @@ SECRET_KEY = 'django-insecure-j10dizc*=l*+^^lah6b1v+rg#)4#(a31bqel1lgpn+xo1!f#$e
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 
 # Application definition
@@ -39,15 +40,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-    'appauth',
+    'accounts',
     'stores',
     'taskline',
 ]
 
-AUTH_USER_MODEL = 'appauth.AppUser'
+AUTH_USER_MODEL = 'accounts.AppUser'
 
 MIDDLEWARE = [
-    'mysite.middleware.PerformanceMiddleware',
+    'taskline.middleware.PerformanceMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -55,7 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'mysite.middleware.MyMiddleware',
+    'taskline.middleware.MyMiddleware',
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -63,7 +64,7 @@ ROOT_URLCONF = 'mysite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATE_DIR, ],
+        'DIRS': [TEMPLATE_DIR, ERROR_PAGES, ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -135,10 +136,10 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'), )
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_URL = '/appauth/user_login'
-LOGIN_REDIRECT_URL = '/appauth/home'
-LOGOUT_URL = '/appauth/user_logout'
-LOGOUT_REDIRECT_URL = '/appauth/user_login'
+LOGIN_URL = '/accounts/user_login'
+LOGIN_REDIRECT_URL = '/accounts/home'
+LOGOUT_URL = '/accounts/user_logout'
+LOGOUT_REDIRECT_URL = '/accounts/user_login'
 
 # SESSION_COOKIE_AGE = 100
 
@@ -200,6 +201,17 @@ LOGGING = {
             'encoding': 'utf-8',
             'delay': True,
         },
+        'access_log_handler': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': os.path.join('logs', 'access.log'),
+            'when': 'd',
+            'interval': 1,
+            'backupCount': 3,
+            'formatter': 'simple',
+            'encoding': 'utf-8',
+            'delay': True,
+        },
     },
     'loggers': {
         'application-logger': {
@@ -220,6 +232,11 @@ LOGGING = {
         # SQLログ
         'django.db.backends': {
             'handlers': ['sql_log__handler'],
+            'level': 'DEBUG',
+        },
+        # アクセスログ
+        'access-logger': {
+            'handlers': ['access_log_handler'],
             'level': 'DEBUG',
         },
     }

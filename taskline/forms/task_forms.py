@@ -1,6 +1,6 @@
 import datetime
 
-from appauth.models import AppUser
+from accounts.models import AppUser
 from django.forms import (DecimalField, CharField, FloatField,
                           ModelChoiceField, TextInput, ValidationError,
                           DateTimeField, DateTimeInput, DurationField)

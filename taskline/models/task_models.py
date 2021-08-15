@@ -3,7 +3,7 @@ from django.db.models import (CharField, DecimalField,
                               FloatField, DateTimeField,
                               TextField, BooleanField, FileField)
 from django.db.models import ForeignKey, CASCADE
-from appauth.models import AppUser
+from accounts.models import AppUser
 
 
 # class BaseModel(Model):

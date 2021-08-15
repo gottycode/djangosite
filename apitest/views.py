@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 
-from appauth.models import AppUser
+from accounts.models import AppUser
 from apitest.serializer import AppUserSerializer
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings

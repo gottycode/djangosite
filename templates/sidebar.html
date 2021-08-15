@@ -25,9 +25,9 @@
           その次のメニュー
         </a>
       </li>
-      {% if perms.appauth.pm %}
+      {% if perms.accounts.pm %}
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'appauth:userlist' %}">
+        <a class="nav-link" href="{% url 'accounts:user_list' %}">
           <span data-feather="layers"></span>
           ユーザー一覧（作成中）
         </a>

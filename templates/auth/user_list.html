@@ -11,17 +11,17 @@
             <th scope="col">#</th>
             <th scope="col">username</th>
             <th scope="col">email</th>
-            <th scope="col">age</th>
-            <th scope="col">age</th>
+            <th scope="col">birthday</th>
+            <th scope="col">birthday</th>
         </tr>
     </thead>
     <tbody>
         {% for user in users %}
         <tr>
             <th scope="row">{{ forloop.counter }}</th>
-            <td><a href="{% url 'appauth:update_user' pk=user.id %}">{{user.username}}</a></td>
+            <td><a href="{% url 'accounts:update_user' id=user.id %}">{{user.username}}</a></td>
             <td>{{user.email}}</td>
-            <td>{{user.age}}</td>
+            <td>{{user.birthday}}</td>
             <td>{{user.user_permissions.all}}</td>
         </tr>
         {% endfor %}

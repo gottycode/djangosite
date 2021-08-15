@@ -19,8 +19,8 @@
     <thead>
         <tr>
             <th scope="col">#</th>
-            <th scope="col">id</th>
-            <th scope="col">タスク名</th>
+            <th scope="col">id <a id="sort-id"><i class="bi bi-arrow-down-up"></i></a></th>
+            <th scope="col">タスク名 <a id="sort-name"><i class="bi bi-arrow-down-up"></i></a></th>
             <th scope="col">時間</th>
             <th scope="col">操作</th>
         </tr>
@@ -30,7 +30,8 @@
 
     </tbody>
 </table>
-<div><a id="lazyLoadLink" href="javascript:void(0);" data-nextpage="2">Load More Posts</a></div>
+<div id="lazyLoadMark" data-nextpage="2" data-sort="id"> </div>
+<div id="bottomOfList" class="mb-5"> </div>
 
 {% endblock %}
 

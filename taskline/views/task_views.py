@@ -24,7 +24,7 @@ class TaskListView(View):
 
     def get(self, request, *args, **kwargs):
 
-        tasks = Task.objects.all()[:RESULT_PER_PAGE]
+        tasks = Task.objects.order_by('id').all()[:RESULT_PER_PAGE]
 
         context = {
             'tasks': tasks
@@ -63,7 +63,9 @@ class TaskListSearchView(View):
 
 def lazy_load_tasks(request):
     page = request.POST.get('page')
-    tasks = Task.objects.all()
+    sort = request.POST.get('sort')
+    print(sort)
+    tasks = Task.objects.order_by(sort).all()
 
     # use Django's pagination
     # https://docs.djangoproject.com/en/dev/topics/pagination/
@@ -132,7 +134,7 @@ class UpdateTaskView(View):
         id = kwargs['id']
         task = get_object_or_404(Task, pk=id)
         form = UpdateTaskForm(request.POST or None, instance=task)
-        if form.is_valid:
+        if form.is_valid():
             form.save()
             return redirect('taskline:task_list')
 
@@ -162,7 +164,7 @@ class DeleteTaskView(View):
         id = kwargs['id']
         task = get_object_or_404(Task, pk=id)
         form = UpdateTaskForm(request.POST or None, instance=task)
-        if form.is_valid:
+        if form.is_valid():
             task.delete()
             return redirect('taskline:task_list')
 

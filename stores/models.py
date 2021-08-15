@@ -1,5 +1,5 @@
 from django.db import models
-from appauth.models import AppUser
+from accounts.models import AppUser
 
 
 class ProductTypes(models.Model):
