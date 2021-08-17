@@ -1,0 +1,145 @@
+django-admin startproject mysite
+
+jquery 3.6
+bootstrap 5.0
+bootstrap.bundle.min.js 5.02
+feather.min.js 4.28
+
+cd mysite
+python manage.py startapp store
+python manage.py makemigrations 
+
+python manage.py migrate
+
+python manage.py runserver
+
+python manage.py startapp accounts
+
+https://office54.net/python/django/django-constant-set
+AbcDeF$G
+
+バッチ
+ログ
+認証
+
+名前
+パスワード
+Email
+社員番号
+等級
+
+■プロジェクト名
+xxxxx-project
+
+■アプリ名
+xxxxx-web-app
+xxxxx-api-app
+xxxxx
+
+■URLの一覧作成
+
+■ModelとViewとFormsは複数ファイルに分割したほうが良い
+複数人で作るし、メンテナンス性とか考えると
+サンプル参照
+
+
+■djangoの構成図
+https://djangobrothers.com/tutorials/memo_app/mtv/
+
+■Function Based View（FBV） vs Class Based View（CBV）　※自分でも結論出ず
+CBVは用途に応じていろいろ種類がある
+CreateViewとかListViewとか。。。
+これらは学習コストもかかるし、中でなにやっているかわかりにくく可読性が悪い、
+PTもやりにくい
+
+なので私はCBVを使うならCreateViewとかListViewの継承元であるViewクラスを使うのが
+よいと思います。Mixinなども使えるし
+必要に応じてViewクラスを継承して拡張できるし、実装もFBVとほぼ同じなので
+ネットで情報を検索しやすい
+
+継承での拡張は考えずに学習コストの低さとわかりやすさなどを重視するならFBVでよいと思います
+
+■form vs modelform
+原則formを使うべき
+form(画面)とmodel(テーブル)が1対1で対応する場合はあまりないと思うし
+model層(DB)と画面表示は独立しているほうが良いと思う
+https://teratail.com/questions/145675
+formを使う場合は画面で入力した値をViewでformから取得してmodelに入れ替えなければならない
+Validationのみformに定義する
+form.saveは使えない
+１つのテンプレートhtmlに複数formクラスを渡すこともできる
+formsetというものもある
+
+■cssのclassを適用(テンプレート)
+モックアップあるし、htmlの見た目はテンプレートのみが良いと思う
+https://noauto-nolife.com/post/django-forms-temp-not-use/
+Formはバリデーション専用にして、Formのhtml form出力機能は使わない
+
+これよさげだが最終更新からちょっと時間たっている
+https://github.com/jazzband/django-widget-tweaks
+https://treyhunner.com/2014/09/adding-css-classes-to-django-form-fields/
+
+
+この方法は現実的ではない
+https://qiita.com/The-town/items/7579befe67efeee33486
+
+こっちはもっと更新されていない
+https://pypi.org/project/django-widgets-improved/
+
+formでwidget使ってcss　class設定
+https://www.codegrepper.com/code-examples/python/frameworks/django/add+css+class+to+django+form
+https://docs.djangoproject.com/en/dev/ref/forms/widgets/#django.forms.Widget.attrs
+
+
+
+
+■lazy load
+これを使ってみた
+https://gist.github.com/nicholaskajoh/ae85bb836f2a6254244c847b962095d4
+https://github.com/protonet/jquery.inview
+
+https://loop-never-ends.com/jquery-inview/
+
+■templateの作成単位と格納場所
+/template/アプリ名/
+
+■models.Manager
+使い方検討（Modelに対する共通処理はここ？）
+https://blog.narito.ninja/detail/105
+https://runebook.dev/ja/docs/django/topics/db/models
+https://docs.djangoproject.com/ja/3.2/topics/db/managers/
+
+■画面ごとに作成するｊｓとｃｓｓについてルール（案）
+静的なファイルは/static/に格納
+/static/アプリ名/html名.js
+※htmlと同じルール
+
+■顧客、所属の実装
+DjangoのauthにあるGroupは対して使えないと思うので
+顧客とか所属は別途実装すればよいと思う
+
+TODO 全てのクラス、ファイルの種類について作成単位と格納フォルダをルール化
+■
+
+■Modelで定義できる型
+https://docs.djangoproject.com/ja/3.2/ref/models/fields/
+https://qiita.com/nachashin/items/f768f0d437e0042dd4b3
+https://qiita.com/KeAt/items/55fdedc8cac7c6852043
+
+■DBのトランザクションについて
+https://djangobrothers.com/blogs/django_transaction_settings/
+
+■操作ログの実装案
+midlewareに実装
+CBVを使うのであれば共通のbaseクラスを作ってそこに実装
+
+■確認画面は無し
+トーストが良い？
+SUNNYはトーストだった
+
+■テンプレートの分割
+header,sidebarなど別ファイルに
+
+■Model、Viewは複数ファイルに分割したほうが良い
+https://qiita.com/piro87084806/items/0a67f7b22856d71d309e
+Modelはサンプル参照

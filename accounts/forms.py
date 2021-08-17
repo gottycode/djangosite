@@ -7,6 +7,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.forms import AuthenticationForm
 
 from django.contrib.auth.models import Permission
+from django.contrib.contenttypes.models import ContentType
 
 from accounts.models import AppUser
 
@@ -99,20 +100,21 @@ class UpdateUserForm(ModelForm):
     email = EmailField(label='メールアドレス')
     password = CharField(label='パスワード', widget=PasswordInput(), required=False)
     confirm_password = CharField(label='パスワード再入力', widget=PasswordInput(), required=False)
-
+    print('♪')
+    typing = ContentType(app_label='accounts', model='appuser')
+    print(typing.values('id'))
     perms = forms.ModelMultipleChoiceField(
         label='権限',
         queryset=Permission.objects.filter(content_type_id=8).all(),
-        widget=forms.CheckboxSelectMultiple
+        widget=forms.CheckboxSelectMultiple,
     )
-    # for i in range(4):
-    #     select + i = ChoiceField(label='属性', widget=RadioSelect, choices=CHOICE, initial=0)
 
     class Meta:
         model = AppUser
         fields = ['username', 'birthday', 'email', 'password', 'confirm_password']
 
     def clean(self):
+
         cleaned_data = super(UpdateUserForm, self).clean()
         password = cleaned_data.get('password')
         confirm_password = cleaned_data.get('confirm_password')
@@ -124,7 +126,14 @@ class UpdateUserForm(ModelForm):
     def save(self, commit=False):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data['password'])
+        print('★')
+        perms = self.cleaned_data['perms']
+        for perm in perms:
+            print(perm)
+            user.user_permissions.add(perm)
         user.save()
+        # self.save_m2m()
+
         return user
 
 

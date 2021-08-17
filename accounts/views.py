@@ -139,15 +139,19 @@ class UpdateUserView(View):
         print(kwargs)
         app_user = get_object_or_404(AppUser, id=kwargs['id'])
         perms = app_user.user_permissions
-
+        print('--------------------------------')
+        # print(perms.values('id',))
+        perm_list = [k['id'] for k in perms.values('id',)]
         # print(AppUser.Meta.permissions)
         form = UpdateUserForm(request.GET or None, instance=app_user)
-        CHOICE = {
-            ('0', 'なし'),
-            ('1', 'あり'),
-        }
+
         # for perm in perms:
         #     form.fields[perm] = ChoiceField(label='属性', widget=RadioSelect, choices=CHOICE, initial=0)
+        print('*******************************************')
+        print(form.fields['perms'].initial)
+        form.fields['perms'].initial = perm_list
+
+        print(form.fields['perms'].initial)
 
         return render(request, self.template_name, {'form': form, 'permittions': perms.all()})
 
@@ -155,9 +159,10 @@ class UpdateUserView(View):
 
         id = kwargs['id']
         user = get_object_or_404(AppUser, pk=id)
-        form = UpdateUserForm(request.POST or None, instance=user)
+        form = UpdateUserForm(request.POST or None, instance=user)  # TODO modelformではなくformの場合はinitial=listで
         if form.is_valid():
             form.save()
+            # form.save_m2m()
             return redirect('accounts:user_list')
 
         else:
