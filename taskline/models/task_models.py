@@ -6,19 +6,26 @@ from django.db.models import ForeignKey, CASCADE
 from accounts.models import AppUser
 
 
-# class BaseModel(Model):
-#     created_at = DateTimeField(auto_now=True)
-#     updated_at = DateTimeField(auto_now_add=True)
+class BaseModel(Model):
+    created_at = DateTimeField(auto_now_add=True)
+    updated_at = DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+        default_permissions = ()
 
 
-class TaskCategory(Model):
+class TaskCategory(BaseModel):
     task_category_name = CharField(max_length=100)
+
+    class Meta:
+        db_table = "task_categories"
 
     def __str__(self):
         return self.task_category_name
 
 
-class Task(Model):
+class Task(BaseModel):
     # 名前
     task_name = CharField(max_length=200)
     task_category = ForeignKey(TaskCategory, on_delete=CASCADE)
@@ -35,6 +42,9 @@ class Task(Model):
     memo = TextField('備考', max_length=50, blank=True)
     is_milestone = BooleanField('マイルストーン', default=False)
     picture = FileField(upload_to='student/', blank=True)
+
+    class Meta:
+        db_table = "tasks"
 
     def __str__(self):
         return self.task_name

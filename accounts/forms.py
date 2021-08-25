@@ -96,16 +96,14 @@ class UpdateUserForm(ModelForm):
     }
 
     username = CharField(label='名前')
-    birthday = DateField(label='誕生日', widget=DateInput(attrs={"type": "date"}), required=False)
+    birthday = DateField(label='誕生日', widget=DateInput(attrs={"typ.e": "date"}), required=False)
     email = EmailField(label='メールアドレス')
     password = CharField(label='パスワード', widget=PasswordInput(), required=False)
     confirm_password = CharField(label='パスワード再入力', widget=PasswordInput(), required=False)
-    print('♪')
-    typing = ContentType(app_label='accounts', model='appuser')
-    print(typing.values('id'))
+    appuser_id = 1  # ContentType.objects.filter(app_label='accounts', model='appuser').all().values('id')[0]['id']
     perms = forms.ModelMultipleChoiceField(
         label='権限',
-        queryset=Permission.objects.filter(content_type_id=8).all(),
+        queryset=Permission.objects.filter(content_type_id=appuser_id).all(),
         widget=forms.CheckboxSelectMultiple,
     )
 
@@ -126,11 +124,17 @@ class UpdateUserForm(ModelForm):
     def save(self, commit=False):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data['password'])
-        print('★')
         perms = self.cleaned_data['perms']
+
+        # 追加
         for perm in perms:
-            print(perm)
-            user.user_permissions.add(perm)
+            if perm not in user.user_permissions.all():
+                user.user_permissions.add(perm)
+        # 削除
+        for user_perm in user.user_permissions.all():
+            if user_perm not in perms:
+                user.user_permissions.remove(user_perm)
+
         user.save()
         # self.save_m2m()
 

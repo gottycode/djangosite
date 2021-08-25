@@ -1,3 +1,5 @@
+pip install django-axes
+
 django-admin startproject mysite
 
 jquery 3.6
@@ -143,3 +145,13 @@ header,sidebarなど別ファイルに
 ■Model、Viewは複数ファイルに分割したほうが良い
 https://qiita.com/piro87084806/items/0a67f7b22856d71d309e
 Modelはサンプル参照
+
+■ログイン失敗でアカウントロック
+https://medium.com/creditengine-tech/django-axes%E3%81%A7%E3%82%A2%E3%82%AB%E3%82%A6%E3%83%B3%E3%83%88%E3%83%AD%E3%83%83%E3%82%AF%E6%A9%9F%E8%83%BD%E4%BB%98%E3%81%8Ddjango%E3%82%A2%E3%83%97%E3%83%AA%E3%82%92%E9%96%8B%E7%99%BA%E3%81%99%E3%82%8B-e5414cc674e0
+https://django-axes.readthedocs.io/en/latest/2_installation.html
+
+画面はこれでカスタマイズ
+https://django-axes.readthedocs.io/en/latest/5_customization.html
+リセットの運用を検討、ロックまでの失敗回数を多くして、解除までの時間を1時間にすれば解除機能の作りこみ不要か？
+
+

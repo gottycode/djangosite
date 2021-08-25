@@ -129,14 +129,21 @@ class UserListView(View, LoginRequiredMixin, PermissionRequiredMixin):
         return render(request, self.template_name, {'users': users})
 
 
-class UpdateUserView(View):
+class UpdateUserView(PermissionRequiredMixin, View):
+
+    permission_required = ('accounts.pm',)
+
     template_name = os.path.join('auth', 'update_user.html')
     form_class = UpdateUserForm
 
     def get(self, request, *args, **kwargs):
 
-        print(dir(request))
-        print(kwargs)
+        # print('★')
+        # print(super().has_permission())
+        # print(super().get_permission_required())
+
+        # print(dir(request))
+        # print(kwargs)
         app_user = get_object_or_404(AppUser, id=kwargs['id'])
         perms = app_user.user_permissions
         print('--------------------------------')

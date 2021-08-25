@@ -16,7 +16,7 @@ from taskline.forms import SearchTaskForm
 
 
 # 1ページあたりの表示件数
-RESULT_PER_PAGE = 10
+RESULT_PER_PAGE = 3
 
 
 class TaskListView(View):
@@ -24,12 +24,13 @@ class TaskListView(View):
 
     def get(self, request, *args, **kwargs):
 
-        tasks = Task.objects.order_by('id').all()[:RESULT_PER_PAGE]
+        # tasks = Task.objects.order_by('id').all()[:RESULT_PER_PAGE]
 
-        context = {
-            'tasks': tasks
-        }
-        return render(request, 'taskline/task_list.html', context)
+        # context = {
+        #     'tasks': tasks
+        # }
+        # return render(request, 'taskline/task_list.html', context)
+        return render(request, 'taskline/task_list.html')
 
 
 class TaskListSearchView(View):
@@ -43,8 +44,6 @@ class TaskListSearchView(View):
             task_name = request.GET.get('task_name')
             work_hours = request.GET.get(key='work_hours', default=-1.0)
             work_hours = work_hours if work_hours else -1.0
-            print('--------------------------')
-            print(work_hours)
             form = SearchTaskForm
             tasks = Task.objects.filter(Q(task_name=task_name) | Q(work_hours=work_hours))
             context = {
@@ -64,13 +63,13 @@ class TaskListSearchView(View):
 def lazy_load_tasks(request):
     page = request.POST.get('page')
     sort = request.POST.get('sort')
-    print(sort)
     tasks = Task.objects.order_by(sort).all()
 
     # use Django's pagination
     # https://docs.djangoproject.com/en/dev/topics/pagination/
 
     paginator = Paginator(tasks, RESULT_PER_PAGE)
+    print(paginator)
     try:
         tasks = paginator.page(page)
     except PageNotAnInteger:

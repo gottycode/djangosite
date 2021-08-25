@@ -6,9 +6,7 @@
    {% csrf_token %}
    {{ form.as_p }}
 
-   {% for perm in permittions %}
-   {{ perms.name }}
-   {% endfor %}
+
    <input type="submit" value="更新">
 </form>
 {% endblock %}
